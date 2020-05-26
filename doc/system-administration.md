@@ -102,9 +102,9 @@ Don't worry about making a mistake here -- you can always change the parameters 
 
 ### 4. Deploy
 
-Once the **group-vars** and **inventory** files are in place, deployment may be performed by opening a terminal, switching to the directory of the DRIVER source code and running the following command (NOTE: Make sure to change the `--user` argument to a user that has sudo privileges on those servers):
+Once the **group-vars** and **inventory** files are in place, deployment may be performed by opening a terminal, switching to the directory of the DRIVER source code and running the following command (NOTE: Make sure to change the `--user` argument to a user that has sudo privileges on those servers and `--private-key=` argument to the path of the .pem file in case you are using AWS):
 ```
-ansible-playbook -i deployment/ansible/inventory/production --user=ubuntu \
+ansible-playbook -i deployment/ansible/inventory/production --private-key=PATH_FOR_AWS_KEY.pem --user=ubuntu \
     deployment/ansible/database.yml \
     deployment/ansible/app.yml \
     deployment/ansible/celery.yml
@@ -135,7 +135,7 @@ Setting up a Docker registry is beyond the scope of this document; there are var
 Once you have a Docker registry set up, follow these steps to use it when deploying your copy of DRIVER:
 1. Execute `vagrant up && vagrant ssh celery`
 2. Build images for the following 5 containers:
-   - App: `sudo docker build -f opt/app/Dockerfile.base -t "<your-repository>/driver-app" /opt/app`
+   - App: `sudo docker build -f /opt/app/Dockerfile.base -t "<your-repository>/driver-app" /opt/app`
    - Schema Editor: `sudo docker build -f /opt/schema_editor/Dockerfile -t "<your-repository>/driver-editor" /opt/schema_editor`
    - User interface: `sudo docker build -f /opt/web/Dockerfile -t "<your-repository>/driver-web" /opt/web`
    - Gradle: `sudo docker build -f /opt/gradle/Dockerfile -t "<your-repository>/driver-gradle" /opt/gradle`
